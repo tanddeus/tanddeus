@@ -6,6 +6,10 @@
 const { $gsap } = useNuxtApp();
 const svgRef = ref<SVGElement | null>(null);
 
+/*
+  Note that both the adjusted duration of each animation as well as the endpoint 
+  will have to change when the screen size changes.
+*/
 onMounted(() => {
   const svgWidth = svgRef.value!.clientWidth;
   const svgHeight = svgRef.value!.clientHeight;
