@@ -23,14 +23,25 @@
 import { Temporal } from 'temporal-polyfill';
 import { BackgroundAnimationManager } from './background-animation-manager';
 
+interface HeroProps {
+  linesAnimationDuration: Temporal.Duration;
+  linesAnimationEasingFunction: GSAPTweenVars['ease'];
+  fadeAnimationDuration: Temporal.Duration;
+  fadeAnimationEasingFunction: GSAPTweenVars['ease'];
+  initialDelay?: Temporal.Duration;
+}
+
 const { $gsap } = useNuxtApp();
+const {
+  linesAnimationDuration,
+  linesAnimationEasingFunction,
+  fadeAnimationDuration,
+  fadeAnimationEasingFunction,
+  initialDelay,
+} = defineProps<HeroProps>();
+
 const svgRef = ref<SVGElement | null>(null);
 const titleRef = ref<HTMLImageElement | null>(null);
-const linesAnimationDuration = Temporal.Duration.from({ milliseconds: 750 });
-const linesAnimationEasingFunction = 'power3.inOut';
-const fadeAnimationDuration = Temporal.Duration.from({ milliseconds: 1000 });
-const fadeAnimationEasingFunction = 'sine.out';
-const initialDelay = Temporal.Duration.from({ milliseconds: 200 });
 
 onMounted(() => {
   const backgroundAnimationManager = new BackgroundAnimationManager(
@@ -74,7 +85,8 @@ onMounted(() => {
   $gsap.to('.hero__title-container', {
     opacity: 1,
     delay:
-      linesAnimationDuration.total('seconds') + initialDelay.total('seconds'),
+      linesAnimationDuration.total('seconds') +
+      (initialDelay?.total('seconds') ?? 0),
     duration: fadeAnimationDuration.total('seconds'),
     ease: fadeAnimationEasingFunction,
   });
