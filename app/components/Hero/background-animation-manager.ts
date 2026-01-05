@@ -1,6 +1,6 @@
+import { gsap } from 'gsap';
 import { Temporal } from 'temporal-polyfill';
 import { Angle, type Point } from '~/shared';
-import { gsap } from 'gsap';
 
 export class BackgroundAnimationManager {
   private static readonly startAngle = Angle.FromDegrees(360);
@@ -12,13 +12,9 @@ export class BackgroundAnimationManager {
 
   private svgElement: SVGElement;
   private getOrigin: () => Point;
-  private baseLineAnimationDuration: Temporal.Duration;
+  private lineAnimationDuration: Temporal.Duration;
   private baseLineAnimationDelay: Temporal.Duration;
-
-  private linesAndTweensByDegrees: Map<
-    number,
-    { line: SVGLineElement; tween: ReturnType<typeof gsap.to> }
-  > = new Map();
+  private linesByDegrees: Map<number, SVGLineElement> = new Map();
 
   constructor(
     svgElement: SVGElement,
@@ -29,20 +25,19 @@ export class BackgroundAnimationManager {
     this.getOrigin = () =>
       getOrigin(this.svgElement.clientWidth, this.svgElement.clientHeight);
 
-    this.baseLineAnimationDuration = this.calculateBaseLineAnimationDuration(
+    this.lineAnimationDuration = this.calculateLineAnimationDuration(
       totalAnimationDuration,
     );
 
     this.baseLineAnimationDelay = this.calculateBaseLineAnimationDelay();
   }
 
-  initializeAnimation() {
-    const lineEndPoints = this.createLineEndPoints();
-    this.createLineElementsAndTweens(lineEndPoints);
+  beginAnimation() {
+    this.createAndAnimateLines();
     this.handleSVGResizeEvents();
   }
 
-  private calculateBaseLineAnimationDuration(
+  private calculateLineAnimationDuration(
     totalAnimationDuration: Temporal.Duration,
   ): Temporal.Duration {
     const totalLines =
@@ -61,26 +56,63 @@ export class BackgroundAnimationManager {
 
   private calculateBaseLineAnimationDelay() {
     const milliseconds = Math.round(
-      this.baseLineAnimationDuration.total('milliseconds') *
+      this.lineAnimationDuration.total('milliseconds') *
         BackgroundAnimationManager.lineAnimationDelayToDurationRatio,
     );
 
     return Temporal.Duration.from({ milliseconds });
   }
 
-  private createLineEndPoints() {
-    const lineEndPoints: Point[] = [];
+  private createAndAnimateLines() {
+    const timeline = gsap.timeline({
+      paused: true,
+    });
 
     for (
       const angle = Angle.FromAngle(BackgroundAnimationManager.startAngle);
       angle.degrees > BackgroundAnimationManager.endAngle.degrees;
       angle.degrees -= BackgroundAnimationManager.angleIncrement.degrees
     ) {
-      const endpoint = this.calculateEndPoint(angle);
-      lineEndPoints.push(endpoint);
+      const lineElement = this.createLineElement(angle);
+      this.svgElement.appendChild(lineElement);
+
+      const delay = this.calculateAdjustedDelay(angle);
+
+      timeline.add(
+        gsap.to(lineElement, {
+          opacity: 1,
+          duration: this.lineAnimationDuration.total('seconds'),
+        }),
+        delay,
+      );
+
+      this.linesByDegrees.set(angle.degrees, lineElement);
     }
 
-    return lineEndPoints;
+    gsap.to(timeline, {
+      duration: timeline.totalDuration(),
+      progress: 1,
+      ease: 'power3.inOut',
+    });
+  }
+
+  private createLineElement(angle: Angle) {
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+
+    const origin = this.getOrigin();
+    const endPoint = this.calculateEndPoint(angle);
+    line.setAttribute('x1', origin.x.toString());
+    line.setAttribute('y1', origin.y.toString());
+    line.setAttribute('x2', endPoint.x.toString());
+    line.setAttribute('y2', endPoint.y.toString());
+
+    line.setAttribute('stroke', BackgroundAnimationManager.strokeColor);
+    line.setAttribute(
+      'stroke-width',
+      BackgroundAnimationManager.strokeWidth.toString(),
+    );
+    line.style.opacity = '0';
+    return line;
   }
 
   private calculateEndPoint(angle: Angle) {
@@ -157,95 +189,11 @@ export class BackgroundAnimationManager {
     return opposite / Math.sin(theta.radians);
   }
 
-  private calculateLineLength(origin: Point, endpoint: Point) {
-    return Math.sqrt(
-      (endpoint.x - origin.x) ** 2 + (endpoint.y - origin.y) ** 2,
-    );
-  }
-
-  private createLineElementsAndTweens(lineEndPoints: Point[]) {
-    const maxLineLength = this.calculateMaxLineLength(lineEndPoints);
-
-    for (let i = 0; i < lineEndPoints.length; i++) {
-      const line = this.createLine();
-      this.svgElement.appendChild(line);
-
-      const delay = this.baseLineAnimationDelay.total('seconds') * i;
-      this.animateOpacity(line, delay);
-
-      const endPoint = lineEndPoints[i]!;
-      const tween = this.createTween(line, endPoint, maxLineLength, delay);
-
-      const degrees =
-        BackgroundAnimationManager.startAngle.degrees -
-        BackgroundAnimationManager.angleIncrement.degrees * i;
-      this.linesAndTweensByDegrees.set(degrees, { line, tween });
-    }
-  }
-
-  private calculateMaxLineLength(lineEndpoints: Point[]) {
-    const origin = this.getOrigin();
-
-    return lineEndpoints.reduce((max, endPoint) => {
-      return Math.max(max, this.calculateLineLength(origin, endPoint));
-    }, 0);
-  }
-
-  private createLine() {
-    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-
-    const origin = this.getOrigin();
-    line.setAttribute('x1', origin.x.toString());
-    line.setAttribute('y1', origin.y.toString());
-    line.setAttribute('x2', origin.x.toString());
-    line.setAttribute('y2', origin.y.toString());
-
-    line.setAttribute('stroke', BackgroundAnimationManager.strokeColor);
-    line.setAttribute(
-      'stroke-width',
-      BackgroundAnimationManager.strokeWidth.toString(),
-    );
-    line.style.opacity = '0';
-    return line;
-  }
-
-  private animateOpacity(line: SVGLineElement, delay: number) {
-    gsap.to(line, {
-      opacity: 1,
-      duration: this.baseLineAnimationDuration.total('seconds'),
-      delay,
-    });
-  }
-
-  private createTween(
-    line: SVGLineElement,
-    endPoint: Point,
-    maxLineLength: number,
-    delay: number,
-  ) {
-    const duration = this.calculateAdjustedLineAnimationDuration(
-      endPoint,
-      maxLineLength,
-    );
-
-    return gsap.to(line, {
-      attr: {
-        x2: endPoint.x,
-        y2: endPoint.y,
-      },
-      duration,
-      delay,
-    });
-  }
-
-  private calculateAdjustedLineAnimationDuration(
-    endPoint: Point,
-    maxLineLength: number,
-  ) {
-    const lineLength = this.calculateLineLength(this.getOrigin(), endPoint);
+  private calculateAdjustedDelay(angle: Angle) {
     return (
-      (this.baseLineAnimationDuration.total('seconds') * lineLength) /
-      maxLineLength
+      this.baseLineAnimationDelay.total('seconds') *
+      ((BackgroundAnimationManager.startAngle.degrees - angle.degrees) /
+        BackgroundAnimationManager.angleIncrement.degrees)
     );
   }
 
@@ -259,20 +207,15 @@ export class BackgroundAnimationManager {
 
   private updateLinesAndTweens() {
     const origin = this.getOrigin();
-    const lineEndPoints = this.createLineEndPoints();
-    const maxLineLength = this.calculateMaxLineLength(lineEndPoints);
 
-    for (let i = 0; i < lineEndPoints.length; i++) {
-      const endPoint = lineEndPoints[i]!;
-      const degrees =
-        BackgroundAnimationManager.startAngle.degrees -
-        i * BackgroundAnimationManager.angleIncrement.degrees;
-
-      const { line, tween } = this.linesAndTweensByDegrees.get(degrees)!;
-      gsap.set(line, {
+    for (const [degrees, lineElement] of this.linesByDegrees.entries()) {
+      const endPoint = this.calculateEndPoint(Angle.FromDegrees(degrees));
+      gsap.set(lineElement, {
         attr: {
           x1: origin.x,
           y1: origin.y,
+          x2: endPoint.x,
+          y2: endPoint.y,
         },
       });
     }

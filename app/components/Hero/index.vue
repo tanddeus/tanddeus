@@ -17,10 +17,10 @@ onMounted(() => {
         y: svgHeight / 2,
       };
     },
-    Temporal.Duration.from({ seconds: 5 }),
+    Temporal.Duration.from({ milliseconds: 1000 }),
   );
 
-  backgroundAnimationManager.initializeAnimation();
+  backgroundAnimationManager.beginAnimation();
 });
 </script>
 
