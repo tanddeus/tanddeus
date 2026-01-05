@@ -19,6 +19,8 @@ onMounted(() => {
     },
     Temporal.Duration.from({ milliseconds: 1000 }),
     'power3.inOut',
+    Temporal.Duration.from({ milliseconds: 1000 }),
+    'power4.out',
   );
 
   backgroundAnimationManager.beginAnimation();

@@ -14,25 +14,31 @@ export class BackgroundAnimationManager {
   private getOrigin: () => Point;
   private lineAnimationDuration: Temporal.Duration;
   private baseLineAnimationDelay: Temporal.Duration;
-  private easingFunction: GSAPTweenVars['ease'];
+  private lineAnimationEasingFunction: GSAPTweenVars['ease'];
+  private fadeAnimationDuration: Temporal.Duration;
+  private fadeAnimationEasingFunction: GSAPTweenVars['ease'];
   private linesByDegrees: Map<number, SVGLineElement> = new Map();
 
   constructor(
     svgElement: SVGElement,
     getOrigin: (svgWidth: number, svgHeight: number) => Point,
-    totalAnimationDuration: Temporal.Duration,
-    easingFunction: GSAPTweenVars['ease'],
+    totalLinesAnimationDuration: Temporal.Duration,
+    lineAnimationEasingFunction: GSAPTweenVars['ease'],
+    fadeAnimationDuration: Temporal.Duration,
+    fadeAnimationEasingFunction: GSAPTweenVars['ease'],
   ) {
     this.svgElement = svgElement;
     this.getOrigin = () =>
       getOrigin(this.svgElement.clientWidth, this.svgElement.clientHeight);
 
     this.lineAnimationDuration = this.calculateLineAnimationDuration(
-      totalAnimationDuration,
+      totalLinesAnimationDuration,
     );
 
     this.baseLineAnimationDelay = this.calculateBaseLineAnimationDelay();
-    this.easingFunction = easingFunction;
+    this.lineAnimationEasingFunction = lineAnimationEasingFunction;
+    this.fadeAnimationDuration = fadeAnimationDuration;
+    this.fadeAnimationEasingFunction = fadeAnimationEasingFunction;
   }
 
   beginAnimation() {
@@ -92,11 +98,21 @@ export class BackgroundAnimationManager {
       this.linesByDegrees.set(angle.degrees, lineElement);
     }
 
-    gsap.to(timeline, {
-      duration: timeline.totalDuration(),
-      progress: 1,
-      ease: this.easingFunction,
-    });
+    gsap
+      .to(timeline, {
+        duration: timeline.totalDuration(),
+        progress: 1,
+        ease: this.lineAnimationEasingFunction,
+      })
+      .then(() => {
+        for (const line of this.linesByDegrees.values()) {
+          gsap.to(line, {
+            opacity: 0.3,
+            duration: this.fadeAnimationDuration.total('seconds'),
+            ease: this.fadeAnimationEasingFunction,
+          });
+        }
+      });
   }
 
   private createLineElement(angle: Angle) {
