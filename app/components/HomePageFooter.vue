@@ -1,6 +1,6 @@
 <template>
   <footer class="footer">
-    <a :href="INSTAGRAM_URL" target="_blank" rel="noreferrer">
+    <a :href="INSTAGRAM_URL" target="_blank" rel="noreferrer" class="link">
       <img
         src="/images/shared/icons/instagram.svg"
         alt="Open the Tanddeus Instagram page in a new tab"
@@ -36,18 +36,23 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .footer {
-  position: absolute;
   bottom: 0;
-  left: 0;
-  width: 100%;
   display: flex;
   justify-content: center;
-  padding: 35px;
+  left: 0;
   opacity: 0;
+  padding: 35px;
+  position: absolute;
+  width: 100%;
+}
+
+.link {
+  display: block;
+  padding: 2.5px;
 }
 
 .icon {
-  width: 35px;
-  height: 35px;
+  height: 30px;
+  width: 30px;
 }
 </style>

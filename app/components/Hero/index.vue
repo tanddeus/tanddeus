@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { Temporal } from 'temporal-polyfill';
+import type { Temporal } from 'temporal-polyfill';
 import { BackgroundAnimationManager } from './background-animation-manager';
 
 interface HeroProps {
@@ -151,9 +151,30 @@ onMounted(() => {
   margin-right: 100px;
 }
 
-@media screen and (min-width: 940px) {
+@media screen and (width >= 940px) {
   .hero__subtitle {
     font-size: 40px;
+  }
+}
+
+@media screen and (height <= 430px) {
+  // .hero__title-container {
+  //   padding-top: 35px;
+  // }
+
+  .hero__title,
+  .hero__subtitle {
+    margin-bottom: 30px;
+  }
+}
+
+@media screen and (height <= 360px) {
+  .hero {
+    align-items: flex-start;
+  }
+
+  .hero__title-container {
+    padding-top: 35px;
   }
 }
 </style>
