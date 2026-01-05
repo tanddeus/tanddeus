@@ -10,6 +10,11 @@
         aria-level="1"
         class="hero__title"
       />
+      <h2 class="hero__subtitle">Web Design and Development</h2>
+      <div class="hero__links">
+        <NuxtLink href="/" class="hero__link">About</NuxtLink>
+        <NuxtLink href="/" class="hero__link">Projects</NuxtLink>
+      </div>
     </div>
   </div>
 </template>
@@ -74,6 +79,8 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+@use '~/assets/scss/partials' as *;
+
 .hero {
   align-items: center;
   display: flex;
@@ -99,7 +106,32 @@ onMounted(() => {
 }
 
 .hero__title {
+  display: block;
+  margin-bottom: 50px;
   max-width: 900px;
   width: 100%;
+}
+
+.hero__subtitle {
+  color: $color-teal;
+  font-family: $font-family-roboto-mono;
+  font-size: 40px;
+  margin-bottom: 72px;
+  text-align: center;
+  text-shadow: -1px -1px 10px #6bdcff40;
+}
+
+.hero__links {
+  display: flex;
+  justify-content: center;
+}
+
+.hero__link {
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.hero__link:has(+ .hero__link) {
+  margin-right: 100px;
 }
 </style>

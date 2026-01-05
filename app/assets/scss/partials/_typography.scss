@@ -12,4 +12,11 @@
   src: url('/fonts/roboto-mono-italic.ttf');
 }
 
+@font-face {
+  font-display: swap;
+  font-family: 'Ubuntu Condensed';
+  src: url('/fonts/ubuntu-condensed.ttf');
+}
+
 $font-family-roboto-mono: 'Roboto Mono', monospace;
+$font-family-ubuntu-condensed: 'Ubuntu Condensed', sans-serif;
