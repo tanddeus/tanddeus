@@ -17,6 +17,7 @@ export class BackgroundAnimationManager {
   private lineAnimationEasingFunction: GSAPTweenVars['ease'];
   private fadeAnimationDuration: Temporal.Duration;
   private fadeAnimationEasingFunction: GSAPTweenVars['ease'];
+  private initialDelay?: Temporal.Duration;
   private linesByDegrees: Map<number, SVGLineElement> = new Map();
 
   constructor(
@@ -26,6 +27,7 @@ export class BackgroundAnimationManager {
     lineAnimationEasingFunction: GSAPTweenVars['ease'],
     fadeAnimationDuration: Temporal.Duration,
     fadeAnimationEasingFunction: GSAPTweenVars['ease'],
+    initialDelay?: Temporal.Duration,
   ) {
     this.svgElement = svgElement;
     this.getOrigin = () =>
@@ -39,6 +41,7 @@ export class BackgroundAnimationManager {
     this.lineAnimationEasingFunction = lineAnimationEasingFunction;
     this.fadeAnimationDuration = fadeAnimationDuration;
     this.fadeAnimationEasingFunction = fadeAnimationEasingFunction;
+    this.initialDelay = initialDelay;
   }
 
   beginAnimation() {
@@ -103,6 +106,7 @@ export class BackgroundAnimationManager {
         duration: timeline.totalDuration(),
         progress: 1,
         ease: this.lineAnimationEasingFunction,
+        delay: this.initialDelay?.total('seconds'),
       })
       .then(() => {
         for (const line of this.linesByDegrees.values()) {

@@ -30,6 +30,7 @@ const linesAnimationDuration = Temporal.Duration.from({ milliseconds: 750 });
 const linesAnimationEasingFunction = 'power3.inOut';
 const fadeAnimationDuration = Temporal.Duration.from({ milliseconds: 1000 });
 const fadeAnimationEasingFunction = 'sine.out';
+const initialDelay = Temporal.Duration.from({ milliseconds: 200 });
 
 onMounted(() => {
   const backgroundAnimationManager = new BackgroundAnimationManager(
@@ -65,13 +66,15 @@ onMounted(() => {
     linesAnimationEasingFunction,
     fadeAnimationDuration,
     fadeAnimationEasingFunction,
+    initialDelay,
   );
 
   backgroundAnimationManager.beginAnimation();
 
   $gsap.to('.hero__title-container', {
     opacity: 1,
-    delay: linesAnimationDuration.total('seconds'),
+    delay:
+      linesAnimationDuration.total('seconds') + initialDelay.total('seconds'),
     duration: fadeAnimationDuration.total('seconds'),
     ease: fadeAnimationEasingFunction,
   });
@@ -127,7 +130,7 @@ onMounted(() => {
 }
 
 .hero__link {
-  font-size: 20px;
+  font-size: 22px;
   text-decoration: none;
 }
 
