@@ -52,11 +52,11 @@ onMounted(() => {
       const titleTextTop = titleElementTop + 0.046 * titleElementHeight;
       const letterTLeft = titleElementLeft + 0.005 * titleElementWidth;
       const letterALeft = titleElementLeft + 0.1735 * titleElementWidth;
-      const tabletBreakpoint = 768;
+      const tabletBreakpoint = 940;
 
       return {
         x:
-          titleElementLeft + svgWidth > tabletBreakpoint ?
+          titleElementLeft + svgWidth >= tabletBreakpoint ?
             letterTLeft
           : letterALeft,
         y: titleTextTop,
@@ -105,7 +105,7 @@ onMounted(() => {
 
 .hero__title-container {
   opacity: 0;
-  padding: 32px;
+  padding: 0 20px;
 }
 
 .hero__title {
@@ -118,8 +118,9 @@ onMounted(() => {
 .hero__subtitle {
   color: $color-teal;
   font-family: $font-family-roboto-mono;
-  font-size: 40px;
-  margin-bottom: 72px;
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 50px;
   text-align: center;
   text-shadow: -1px -1px 10px #6bdcff40;
 }
@@ -136,5 +137,11 @@ onMounted(() => {
 
 .hero__link:has(+ .hero__link) {
   margin-right: 100px;
+}
+
+@media screen and (min-width: 940px) {
+  .hero__subtitle {
+    font-size: 40px;
+  }
 }
 </style>
