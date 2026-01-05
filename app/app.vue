@@ -1,22 +1,8 @@
 <template>
-  <main>
-    <Hero />
-    <NuxtRouteAnnouncer />
-  </main>
+  <NuxtPage />
+  <NuxtRouteAnnouncer />
 </template>
 
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background-color: #242424;
-}
-
-main {
-  height: 100vh;
-}
+<style lang="scss">
+@use '~/assets/scss/main';
 </style>

@@ -107,7 +107,7 @@ export class BackgroundAnimationManager {
       .then(() => {
         for (const line of this.linesByDegrees.values()) {
           gsap.to(line, {
-            opacity: 0.3,
+            opacity: 0.2,
             duration: this.fadeAnimationDuration.total('seconds'),
             ease: this.fadeAnimationEasingFunction,
           });
