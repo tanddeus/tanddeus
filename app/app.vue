@@ -1,6 +1,6 @@
 <template>
   <main>
-    <Hero2 />
+    <Hero />
     <NuxtRouteAnnouncer />
   </main>
 </template>
