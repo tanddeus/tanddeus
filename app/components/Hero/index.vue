@@ -18,6 +18,7 @@ onMounted(() => {
       };
     },
     Temporal.Duration.from({ milliseconds: 1000 }),
+    'power3.inOut',
   );
 
   backgroundAnimationManager.beginAnimation();

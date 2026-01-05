@@ -14,12 +14,14 @@ export class BackgroundAnimationManager {
   private getOrigin: () => Point;
   private lineAnimationDuration: Temporal.Duration;
   private baseLineAnimationDelay: Temporal.Duration;
+  private easingFunction: GSAPTweenVars['ease'];
   private linesByDegrees: Map<number, SVGLineElement> = new Map();
 
   constructor(
     svgElement: SVGElement,
     getOrigin: (svgWidth: number, svgHeight: number) => Point,
     totalAnimationDuration: Temporal.Duration,
+    easingFunction: GSAPTweenVars['ease'],
   ) {
     this.svgElement = svgElement;
     this.getOrigin = () =>
@@ -30,6 +32,7 @@ export class BackgroundAnimationManager {
     );
 
     this.baseLineAnimationDelay = this.calculateBaseLineAnimationDelay();
+    this.easingFunction = easingFunction;
   }
 
   beginAnimation() {
@@ -92,7 +95,7 @@ export class BackgroundAnimationManager {
     gsap.to(timeline, {
       duration: timeline.totalDuration(),
       progress: 1,
-      ease: 'power3.inOut',
+      ease: this.easingFunction,
     });
   }
 
