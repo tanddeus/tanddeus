@@ -19,6 +19,7 @@ export class BackgroundAnimationManager {
   private fadeAnimationEasingFunction: GSAPTweenVars['ease'];
   private initialDelay?: Temporal.Duration;
   private linesByDegrees: Map<number, SVGLineElement> = new Map();
+  private resizeObserver?: ResizeObserver;
 
   constructor(
     svgElement: SVGElement,
@@ -46,7 +47,14 @@ export class BackgroundAnimationManager {
 
   beginAnimation() {
     this.createAndAnimateLines();
+  }
+
+  watchForResize() {
     this.handleSVGResizeEvents();
+  }
+
+  stopWatchingForResize() {
+    this.resizeObserver?.disconnect();
   }
 
   private calculateLineAnimationDuration(
@@ -221,11 +229,11 @@ export class BackgroundAnimationManager {
   }
 
   private handleSVGResizeEvents() {
-    const observer = new ResizeObserver(() => {
+    this.resizeObserver = new ResizeObserver(() => {
       this.updateLinesAndTweens();
     });
 
-    observer.observe(this.svgElement);
+    this.resizeObserver.observe(this.svgElement);
   }
 
   private updateLinesAndTweens() {

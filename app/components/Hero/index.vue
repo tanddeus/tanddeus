@@ -42,9 +42,12 @@ const {
 
 const svgRef = ref<SVGElement | null>(null);
 const titleRef = ref<HTMLImageElement | null>(null);
+const backgroundAnimationManagerRef = ref<BackgroundAnimationManager | null>(
+  null,
+);
 
 onMounted(() => {
-  const backgroundAnimationManager = new BackgroundAnimationManager(
+  backgroundAnimationManagerRef.value = new BackgroundAnimationManager(
     svgRef.value!,
     (svgWidth: number) => {
       const {
@@ -80,7 +83,7 @@ onMounted(() => {
     initialDelay,
   );
 
-  backgroundAnimationManager.beginAnimation();
+  backgroundAnimationManagerRef.value.beginAnimation();
 
   $gsap.to('.hero__title-container', {
     opacity: 1,
@@ -90,6 +93,14 @@ onMounted(() => {
     duration: fadeAnimationDuration.total('seconds'),
     ease: fadeAnimationEasingFunction,
   });
+});
+
+onActivated(() => {
+  backgroundAnimationManagerRef.value?.watchForResize();
+});
+
+onDeactivated(() => {
+  backgroundAnimationManagerRef.value?.stopWatchingForResize();
 });
 </script>
 
