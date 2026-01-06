@@ -12,8 +12,8 @@
       />
       <h2 class="hero__subtitle">Web Design and Development</h2>
       <div class="hero__links">
-        <NuxtLink href="/" class="hero__link">About</NuxtLink>
-        <NuxtLink href="/" class="hero__link">Projects</NuxtLink>
+        <NuxtLink href="/about" class="hero__link">About</NuxtLink>
+        <NuxtLink href="/projects" class="hero__link">Projects</NuxtLink>
       </div>
     </div>
   </div>
@@ -113,6 +113,7 @@ onMounted(() => {
   position: absolute;
   top: 0;
   width: 100%;
+  z-index: -1;
 }
 
 .hero__title-container {
