@@ -1,26 +1,63 @@
 <template>
+  <div class="spacer"></div>
   <header class="header">
     <svg ref="svgRef" class="header__background"></svg>
-    <NuxtLink to="/">
-      <img
-        ref="titleRef"
-        src="/images/components/hero/title.svg"
-        alt="Go to the Tanddeus home page"
-        class="header__title"
-    /></NuxtLink>
-    <HamburgerButton />
+
+    <nav class="header--navigation">
+      <NuxtLink to="/">
+        <img
+          ref="titleRef"
+          src="/images/components/hero/title.svg"
+          alt="Go to the Tanddeus home page"
+          class="header__title"
+      /></NuxtLink>
+      <HamburgerButton :is-open="showMenu" :set-is-open="setShowMenu" />
+    </nav>
+
+    <div class="hamburger-menu" v-if="showMenu">
+      <ul class="hamburger-menu__items main-menu">
+        <li class="main-menu__item">
+          <NuxtLink to="/about">About</NuxtLink>
+        </li>
+        <li class="main-menu__item">
+          <NuxtLink to="/projects">Projects</NuxtLink>
+        </li>
+      </ul>
+      <ul class="hamburger-menu__items social-media-menu">
+        <a
+          :href="INSTAGRAM_URL"
+          target="_blank"
+          rel="noreferrer"
+          class="social-media-menu__link"
+        >
+          <img
+            src="/images/shared/icons/instagram.svg"
+            alt="Open the Tanddeus Instagram page in a new tab"
+            class="social-media-menu__icon"
+        /></a>
+      </ul>
+    </div>
   </header>
 </template>
 
 <script setup lang="ts">
+import HamburgerButton from './HamburgerButton.vue';
 import { BackgroundRenderer } from './background-renderer';
+import { INSTAGRAM_URL } from '~/shared';
+
+const { $gsap } = useNuxtApp();
 
 const svgRef = ref<SVGElement | null>(null);
 const titleRef = ref<HTMLImageElement | null>(null);
 const backgroundRendererRef = ref<BackgroundRenderer | null>(null);
 
+const showMenu = ref(false);
+const setShowMenu = (show: boolean) => {
+  showMenu.value = show;
+};
+
 onMounted(() => {
-  const getOrigin = (svgWidth: number) => {
+  const getOrigin = () => {
     const {
       top: titleElementTop,
       left: titleElementLeft,
@@ -32,7 +69,7 @@ onMounted(() => {
       Because there is a faint glow around the title, the actual position 
       of the top of the letters is a bit inset from the top of the element. 
       The position of the letter A would have to be 
-        calculated regardless.
+      calculated regardless.
     */
     const titleTextTop = titleElementTop + 0.046 * titleElementHeight;
     const letterALeft = titleElementLeft + 0.1735 * titleElementWidth;
@@ -49,28 +86,52 @@ onMounted(() => {
   );
 
   backgroundRendererRef.value.drawBackground();
-});
-
-onActivated(() => {
   backgroundRendererRef.value?.watchForResize();
 });
 
-onDeactivated(() => {
+onUnmounted(() => {
   backgroundRendererRef.value?.stopWatchingForResize();
+});
+
+watch(showMenu, () => {
+  const currentHeaderAnimations = $gsap.getTweensOf('header');
+  currentHeaderAnimations.forEach(animation => animation.pause());
+  $gsap.to('header', {
+    height: showMenu.value ? '100vh' : '68px',
+    duration: 0.3,
+    ease: 'ease-out',
+  });
+  currentHeaderAnimations.forEach(animation => animation.kill());
 });
 </script>
 
 <style lang="scss" scoped>
 @use '~/assets/scss/partials' as *;
+@use './styles' as *;
+
+.spacer {
+  height: $header-height;
+}
 
 .header {
-  position: relative;
-  height: 68px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $header-height;
   border-bottom: 1px solid $color-teal;
-  padding-left: 12.5px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: $color-dark-gray;
+}
+
+.header--closed {
+  animation: close-menu $menu-animation-duration $menu-animation-ease forwards;
+}
+
+.header--open {
+  animation: open-menu $menu-animation-duration $menu-animation-ease forwards;
 }
 
 .header__background {
@@ -82,7 +143,70 @@ onDeactivated(() => {
   z-index: -1;
 }
 
+.header--navigation {
+  height: $header-height;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: $horizontal-padding-sm-screens;
+}
+
 .header__title {
-  height: 35px;
+  height: 22px;
+}
+
+.hamburger-menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.hamburger-menu__items {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.main-menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 100px;
+}
+
+.social-media-menu {
+  display: flex;
+  justify-content: center;
+  padding: 35px 0;
+}
+
+.social-media-menu__link {
+  display: block;
+  padding: 2.5px;
+}
+
+.social-media-menu__icon {
+  height: 30px;
+  width: 30px;
+}
+
+@media screen and (max-height: 430px) {
+  .main-menu {
+    flex-direction: row;
+  }
+}
+
+@keyframes open-menu {
+  to {
+    height: 100vh;
+  }
+}
+
+@keyframes close-menu {
+  to {
+    height: $header-height;
+  }
 }
 </style>

@@ -1,3 +1,3 @@
 <template>
-  <TheHeader />
+  <ClientOnly> <TheHeader /></ClientOnly>
 </template>

@@ -1,4 +1,5 @@
 <template>
+  <div class="spacer"></div>
   <header class="header">
     <svg ref="svgRef" class="header__background"></svg>
     <nav class="navigation">
@@ -22,11 +23,17 @@
     <nav class="navigation">
       <ul class="navigation__menu secondary-navigation__menu">
         <li>
-          <img
-            src="/images/shared/icons/instagram.svg"
-            alt="Open the Tanddeus Instagram page in a new tab"
-            class="icon"
-          />
+          <a
+            :href="INSTAGRAM_URL"
+            target="_blank"
+            rel="noreferrer"
+            class="secondary-navigation__link"
+          >
+            <img
+              src="/images/shared/icons/instagram.svg"
+              alt="Open the Tanddeus Instagram page in a new tab"
+              class="secondary-navigation__icon"
+          /></a>
         </li>
       </ul>
     </nav>
@@ -35,6 +42,7 @@
 
 <script setup lang="ts">
 import { BackgroundRenderer } from './background-renderer';
+import { INSTAGRAM_URL } from '~/shared';
 
 const svgRef = ref<SVGElement | null>(null);
 const titleRef = ref<HTMLImageElement | null>(null);
@@ -69,27 +77,33 @@ onMounted(() => {
   );
 
   backgroundRendererRef.value.drawBackground();
-});
-
-onActivated(() => {
   backgroundRendererRef.value?.watchForResize();
 });
 
-onDeactivated(() => {
+onUnmounted(() => {
   backgroundRendererRef.value?.stopWatchingForResize();
 });
 </script>
 
 <style lang="scss" scoped>
 @use '~/assets/scss/partials' as *;
+@use './styles' as *;
+
+.spacer {
+  height: $header-height;
+}
 
 .header {
-  position: relative;
-  height: 68px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $header-height;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid $color-teal;
+  background-color: $color-dark-gray;
 }
 
 .header__background {
@@ -116,11 +130,21 @@ onDeactivated(() => {
   margin-right: 50px;
 }
 
+.header__title {
+  height: 35px;
+}
+
 .secondary-navigation__menu {
   justify-content: flex-end;
 }
 
-.header__title {
-  height: 35px;
+.secondary-navigation__link {
+  display: block;
+  padding: 2.5px;
+}
+
+.secondary-navigation__icon {
+  height: 30px;
+  width: 30px;
 }
 </style>

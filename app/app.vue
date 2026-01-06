@@ -1,4 +1,5 @@
 <template>
+  <TheHeader />
   <NuxtPage keepalive />
   <NuxtRouteAnnouncer />
 </template>

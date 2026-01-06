@@ -1,24 +1,11 @@
 <template>
-  <div class="header--sm-screens">
-    <TheHeaderSmallScreens />
-  </div>
-  <div class="header--lg-screens">
-    <TheHeaderLargeScreens />
-  </div>
+  <TheHeaderSmallScreens v-if="showSmScreenHeader" />
+  <TheHeaderLargeScreens v-else />
 </template>
 
-<style lang="scss" scoped>
-.header--lg-screens {
-  display: none;
-}
-
-@media screen and (min-width: 1000px) {
-  .header--sm-screens {
-    display: none;
-  }
-
-  .header--lg-screens {
-    display: initial;
-  }
-}
-</style>
+<script setup lang="ts">
+const screenDimensions = useScreenDimensions();
+const showSmScreenHeader = computed(() => {
+  return screenDimensions.width < 1000;
+}); //
+</script>

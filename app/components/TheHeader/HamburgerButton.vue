@@ -21,22 +21,28 @@
 </template>
 
 <script setup lang="ts">
-const isOpen = ref(false);
+interface HamburgerButtonProps {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+}
+
+const { isOpen, setIsOpen } = defineProps<HamburgerButtonProps>();
 
 function toggleMenu() {
-  isOpen.value = !isOpen.value;
+  setIsOpen(!isOpen);
 }
 </script>
 
 <style lang="scss" scoped>
 @use '~/assets/scss/partials' as *;
+@use './styles' as *;
 
 .hamburger {
   width: 65px;
-  height: 68px;
+  height: $header-height;
   border: none;
   box-sizing: border-box;
-  padding: 18px 12.5px;
+  padding: 18px $horizontal-padding-sm-screens;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -55,7 +61,7 @@ function toggleMenu() {
   display: inline-block;
   height: 3px;
   border-radius: 1.5px;
-  transition: all 300ms ease-out;
+  transition: all $menu-animation-duration $menu-animation-ease;
   background-color: $color-teal;
 }
 
