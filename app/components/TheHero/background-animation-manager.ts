@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 import { Temporal } from 'temporal-polyfill';
-import { Angle, type Point } from '~/shared';
+import { Angle, calculateEndPoint, type Point } from '~/shared';
 
 export class BackgroundAnimationManager {
   private static readonly startAngle = Angle.FromDegrees(360);
@@ -129,9 +129,14 @@ export class BackgroundAnimationManager {
 
   private createLineElement(angle: Angle) {
     const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-
     const origin = this.getOrigin();
-    const endPoint = this.calculateEndPoint(angle);
+    const endPoint = calculateEndPoint(
+      origin,
+      this.svgElement.clientWidth,
+      this.svgElement.clientHeight,
+      angle,
+    );
+
     line.setAttribute('x1', origin.x.toString());
     line.setAttribute('y1', origin.y.toString());
     line.setAttribute('x2', endPoint.x.toString());
@@ -146,80 +151,6 @@ export class BackgroundAnimationManager {
     return line;
   }
 
-  private calculateEndPoint(angle: Angle) {
-    const containerWidth = this.svgElement.clientWidth;
-    const containerHeight = this.svgElement.clientHeight;
-    const origin = this.getOrigin();
-
-    let possibleOpposite: number, possibleAdjacent: number;
-
-    if (angle.degrees <= 90) {
-      possibleAdjacent = origin.y;
-      possibleOpposite = containerWidth - origin.x;
-    } else if (angle.degrees <= 180) {
-      possibleAdjacent = origin.x;
-      possibleOpposite = origin.y;
-    } else if (angle.degrees <= 270) {
-      possibleAdjacent = containerHeight - origin.y;
-      possibleOpposite = origin.x;
-    } else {
-      possibleAdjacent = containerWidth - origin.x;
-      possibleOpposite = containerHeight - origin.y;
-    }
-
-    const theta = this.makeAcute(angle);
-    const hypotenuseFromAdjacent = this.calculateHypotenuseFromAdjacent(
-      possibleAdjacent,
-      theta,
-    );
-    const hypotenuseFromOpposite = this.calculateHypotenuseFromOpposite(
-      possibleOpposite,
-      theta,
-    );
-
-    if (hypotenuseFromAdjacent < hypotenuseFromOpposite) {
-      const actualOpposite = Math.sqrt(
-        hypotenuseFromAdjacent ** 2 - possibleAdjacent ** 2,
-      );
-
-      if (angle.degrees <= 90) {
-        return { x: origin.x + actualOpposite, y: 0 };
-      } else if (angle.degrees <= 180) {
-        return { x: 0, y: origin.y - actualOpposite };
-      } else if (angle.degrees <= 270) {
-        return { x: origin.x - actualOpposite, y: containerHeight };
-      }
-
-      return { x: containerWidth, y: origin.y + actualOpposite };
-    }
-
-    const actualAdjacent = Math.sqrt(
-      hypotenuseFromOpposite ** 2 - possibleOpposite ** 2,
-    );
-
-    if (angle.degrees <= 90) {
-      return { x: containerWidth, y: origin.y - actualAdjacent };
-    } else if (angle.degrees <= 180) {
-      return { x: origin.x - actualAdjacent, y: 0 };
-    } else if (angle.degrees <= 270) {
-      return { x: 0, y: origin.y + actualAdjacent };
-    }
-
-    return { x: origin.x + actualAdjacent, y: containerHeight };
-  }
-
-  private makeAcute(angle: Angle) {
-    return Angle.FromDegrees((360 - angle.degrees) % 90);
-  }
-
-  private calculateHypotenuseFromAdjacent(adjacent: number, theta: Angle) {
-    return adjacent / Math.cos(theta.radians);
-  }
-
-  private calculateHypotenuseFromOpposite(opposite: number, theta: Angle) {
-    return opposite / Math.sin(theta.radians);
-  }
-
   private calculateAdjustedDelay(angle: Angle) {
     return (
       this.baseLineAnimationDelay.total('seconds') *
@@ -230,17 +161,26 @@ export class BackgroundAnimationManager {
 
   private handleSVGResizeEvents() {
     this.resizeObserver = new ResizeObserver(() => {
-      this.updateLinesAndTweens();
+      console.log('resize');
+      this.updateLines();
     });
 
     this.resizeObserver.observe(this.svgElement);
   }
 
-  private updateLinesAndTweens() {
+  private updateLines() {
     const origin = this.getOrigin();
+    const clientWidth = this.svgElement.clientWidth;
+    const clientHeight = this.svgElement.clientHeight;
 
     for (const [degrees, lineElement] of this.linesByDegrees.entries()) {
-      const endPoint = this.calculateEndPoint(Angle.FromDegrees(degrees));
+      const endPoint = calculateEndPoint(
+        origin,
+        clientWidth,
+        clientHeight,
+        Angle.FromDegrees(degrees),
+      );
+
       gsap.set(lineElement, {
         attr: {
           x1: origin.x,

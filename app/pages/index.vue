@@ -1,6 +1,6 @@
 <template>
   <main class="page">
-    <Hero
+    <TheHero
       :lines-animation-duration="linesAnimationDuration"
       :lines-animation-easing-function="linesAnimationEasingFunction"
       :fade-animation-duration="fadeAnimationDuration"

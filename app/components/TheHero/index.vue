@@ -47,35 +47,37 @@ const backgroundAnimationManagerRef = ref<BackgroundAnimationManager | null>(
 );
 
 onMounted(() => {
-  backgroundAnimationManagerRef.value = new BackgroundAnimationManager(
-    svgRef.value!,
-    (svgWidth: number) => {
-      const {
-        top: titleElementTop,
-        left: titleElementLeft,
-        width: titleElementWidth,
-        height: titleElementHeight,
-      } = titleRef.value!.getBoundingClientRect();
+  const getOrigin = (svgWidth: number) => {
+    const {
+      top: titleElementTop,
+      left: titleElementLeft,
+      width: titleElementWidth,
+      height: titleElementHeight,
+    } = titleRef.value!.getBoundingClientRect();
 
-      /* 
+    /* 
         Because there is a faint glow around the title, the actual position 
         of the top / left of the letters is a bit inset from the top and left 
         of the element. The position of the letter A would have to be 
         calculated regardless.
       */
-      const titleTextTop = titleElementTop + 0.046 * titleElementHeight;
-      const letterTLeft = titleElementLeft + 0.005 * titleElementWidth;
-      const letterALeft = titleElementLeft + 0.1735 * titleElementWidth;
-      const tabletBreakpoint = 940;
+    const titleTextTop = titleElementTop + 0.046 * titleElementHeight;
+    const letterTLeft = titleElementLeft + 0.005 * titleElementWidth;
+    const letterALeft = titleElementLeft + 0.1735 * titleElementWidth;
+    const tabletBreakpoint = 940;
 
-      return {
-        x:
-          titleElementLeft + svgWidth >= tabletBreakpoint ?
-            letterTLeft
-          : letterALeft,
-        y: titleTextTop,
-      };
-    },
+    return {
+      x:
+        titleElementLeft + svgWidth >= tabletBreakpoint ?
+          letterTLeft
+        : letterALeft,
+      y: titleTextTop,
+    };
+  };
+
+  backgroundAnimationManagerRef.value = new BackgroundAnimationManager(
+    svgRef.value!,
+    getOrigin,
     linesAnimationDuration,
     linesAnimationEasingFunction,
     fadeAnimationDuration,

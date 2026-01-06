@@ -1,5 +1,3 @@
 <template>
-  <header>
-    <HamburgerButton />
-  </header>
+  <TheHeader />
 </template>
