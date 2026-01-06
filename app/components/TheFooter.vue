@@ -10,6 +10,7 @@
 }
 
 .copyright-notice {
+  font-size: 15px;
   text-align: center;
 }
 </style>

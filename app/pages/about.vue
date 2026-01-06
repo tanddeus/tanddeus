@@ -521,20 +521,21 @@
         tanddeusdesignanddevelopment@gmail.com
       </a>
     </section>
+    <TheFooter />
   </main>
 </template>
 
 <style lang="scss" scoped>
 .page {
-  padding: 30px 15px 0 15px;
+  padding: 30px 15px 0;
 }
 
 .section {
   margin: auto;
-  width: 100%;
+  margin-bottom: 150px;
   max-width: 800px;
   padding-top: 35px;
-  margin-bottom: 150px;
+  width: 100%;
 }
 
 .title {
@@ -543,9 +544,9 @@
 
 .hero {
   display: block;
-  margin: 0px auto 60px auto;
-  width: 100%;
+  margin: 0 auto 60px;
   max-width: 400px;
+  width: 100%;
 }
 
 .paragraph {
@@ -561,14 +562,14 @@
   text-align: center;
 }
 
-@media screen and (min-width: 700px) {
+@media screen and (width >= 700px) {
   .hero {
-    width: 500px;
     max-width: unset;
+    width: 500px;
   }
 }
 
-@media screen and (min-width: 840px) {
+@media screen and (width >= 840px) {
   .hero {
     width: 600px;
   }
