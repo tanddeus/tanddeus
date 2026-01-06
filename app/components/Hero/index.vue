@@ -143,11 +143,6 @@ onMounted(() => {
   justify-content: center;
 }
 
-.hero__link {
-  font-size: 22px;
-  text-decoration: none;
-}
-
 .hero__link:has(+ .hero__link) {
   margin-right: 100px;
 }
@@ -159,10 +154,6 @@ onMounted(() => {
 }
 
 @media screen and (height <= 430px) {
-  // .hero__title-container {
-  //   padding-top: 35px;
-  // }
-
   .hero__title,
   .hero__subtitle {
     margin-bottom: 30px;
