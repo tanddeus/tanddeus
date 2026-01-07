@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <svg ref="svgRef" class="header__background"></svg>
+    <svg ref="svgRef" class="header__background" />
     <nav class="navigation">
       <ul class="navigation__menu">
         <li class="main-navigation__item">

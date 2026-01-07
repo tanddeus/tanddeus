@@ -12,6 +12,11 @@ export function calculateEndPoint(
   containerHeight: number,
   angle: Angle,
 ) {
+  if (angle.degrees === 360) return { x: containerWidth, y: origin.y };
+  if (angle.degrees === 270) return { x: origin.x, y: containerHeight };
+  if (angle.degrees === 180) return { x: 0, y: origin.y };
+  if (angle.degrees === 90) return { x: origin.x, y: 0 };
+
   let possibleOpposite: number, possibleAdjacent: number;
 
   if (angle.degrees <= 90) {
@@ -37,6 +42,20 @@ export function calculateEndPoint(
     possibleOpposite,
     theta,
   );
+
+  if (
+    Number.isNaN(hypotenuseFromAdjacent) ||
+    Number.isNaN(hypotenuseFromOpposite)
+  ) {
+    console.log('nan ' + angle.degrees);
+  }
+
+  if (
+    hypotenuseFromAdjacent === Infinity ||
+    hypotenuseFromOpposite === Infinity
+  ) {
+    console.log('inifinity ' + angle.degrees);
+  }
 
   if (hypotenuseFromAdjacent < hypotenuseFromOpposite) {
     const actualOpposite = Math.sqrt(

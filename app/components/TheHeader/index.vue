@@ -9,18 +9,17 @@
 <script setup lang="ts">
 const route = useRoute();
 const showHeader = computed(() => {
-  console.log(showHeader);
   return route.path !== '/';
 });
 </script>
 
 <style lang="scss">
 .the-header-enter-active {
-  transition: opacity 150ms ease-out 150ms;
+  transition: opacity 150ms ease-out;
 }
 
 .the-header-leave-active {
-  transition: opacity 150ms ease-out;
+  transition: opacity 150ms ease-in;
 }
 
 .the-header-enter-from,

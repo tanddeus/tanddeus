@@ -98,7 +98,7 @@ onMounted(() => {
   });
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   backgroundAnimationManagerRef.value?.stopWatchingForResize();
 });
 

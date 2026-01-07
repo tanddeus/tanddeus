@@ -1,7 +1,7 @@
 <template>
-  <div class="spacer"></div>
+  <div class="spacer" />
   <header class="header">
-    <svg ref="svgRef" class="header__background"></svg>
+    <svg ref="svgRef" class="header__background" />
 
     <nav class="header--navigation">
       <NuxtLink to="/">
@@ -14,7 +14,7 @@
       <HamburgerButton :is-open="showMenu" :set-is-open="setShowMenu" />
     </nav>
 
-    <div class="hamburger-menu" v-if="showMenu">
+    <div v-if="showMenu" class="hamburger-menu">
       <ul class="hamburger-menu__items main-menu">
         <li class="main-menu__item">
           <NuxtLink to="/about" @click="setShowMenu(false)">About</NuxtLink>

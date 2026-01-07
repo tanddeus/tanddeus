@@ -5,17 +5,17 @@
     @click="toggleMenu"
   >
     <div class="hamburger__row">
-      <span class="hamburger__bar hamburger__bar--top-left"></span>
-      <span class="hamburger__bar hamburger__bar--top-right"></span>
+      <span class="hamburger__bar hamburger__bar--top-left" />
+      <span class="hamburger__bar hamburger__bar--top-right" />
     </div>
 
     <div class="hamburger__row">
-      <span class="hamburger__bar hamburger__bar--middle"></span>
+      <span class="hamburger__bar hamburger__bar--middle" />
     </div>
 
     <div class="hamburger__row">
-      <span class="hamburger__bar hamburger__bar--bottom-left"></span>
-      <span class="hamburger__bar hamburger__bar--bottom-right"></span>
+      <span class="hamburger__bar hamburger__bar--bottom-left" />
+      <span class="hamburger__bar hamburger__bar--bottom-right" />
     </div>
   </button>
 </template>
