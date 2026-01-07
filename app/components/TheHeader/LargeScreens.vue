@@ -1,5 +1,4 @@
 <template>
-  <div class="spacer"></div>
   <header class="header">
     <svg ref="svgRef" class="header__background"></svg>
     <nav class="navigation">
@@ -88,10 +87,6 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 @use '~/assets/scss/partials' as *;
 @use './styles' as *;
-
-.spacer {
-  height: $header-height;
-}
 
 .header {
   position: fixed;

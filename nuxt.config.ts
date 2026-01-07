@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/eslint', '@hypernym/nuxt-gsap'],
+  modules: ['@nuxt/eslint', '@hypernym/nuxt-gsap', '@pinia/nuxt'],
   app: {
     pageTransition: {
       name: 'page',

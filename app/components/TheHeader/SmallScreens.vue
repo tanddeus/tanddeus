@@ -106,15 +106,22 @@ watch(showMenu, () => {
   });
   currentHeaderAnimations.forEach(animation => animation.kill());
 });
+
+const scrollbarStatus = useScrollbarStatus();
+const paddingLeft = computed(() => {
+  return `${scrollbarStatus.scrollbarWidth + 12.5}px`;
+});
+
+const paddingRight = computed(() => {
+  return scrollbarStatus.isPageScrollable ? 0 : (
+      scrollbarStatus.scrollbarWidth + 'px'
+    );
+});
 </script>
 
 <style lang="scss" scoped>
 @use '~/assets/scss/partials' as *;
 @use './styles' as *;
-
-.spacer {
-  height: $header-height;
-}
 
 .header {
   position: fixed;
@@ -128,6 +135,8 @@ watch(showMenu, () => {
   flex-direction: column;
   background-color: $color-dark-gray;
   z-index: 1;
+  padding-left: v-bind(paddingLeft);
+  padding-right: v-bind(paddingRight);
 }
 
 .header--closed {
@@ -152,7 +161,7 @@ watch(showMenu, () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: $horizontal-padding-sm-screens;
+  // padding-left: $horizontal-padding-sm-screens;
 }
 
 .header__title {
