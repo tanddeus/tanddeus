@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <svg ref="svgRef" class="header__background" />
+    <svg ref="svgRef" class="header__background"></svg>
     <nav class="navigation">
       <ul class="navigation__menu">
         <li class="main-navigation__item">
@@ -82,6 +82,17 @@ onMounted(() => {
 onUnmounted(() => {
   backgroundRendererRef.value?.stopWatchingForResize();
 });
+
+const scrollbarStatus = useScrollbarStatus();
+const paddingLeft = computed(() => {
+  return `${scrollbarStatus.scrollbarWidth + 20}px`;
+});
+
+const paddingRight = computed(() => {
+  return scrollbarStatus.isPageScrollable ? '20px' : (
+      `${scrollbarStatus.scrollbarWidth + 20}px`
+    );
+});
 </script>
 
 <style lang="scss" scoped>
@@ -99,6 +110,8 @@ onUnmounted(() => {
   align-items: center;
   border-bottom: 1px solid $color-teal;
   background-color: $color-dark-gray;
+  padding-left: v-bind(paddingLeft);
+  padding-right: v-bind(paddingRight);
 }
 
 .header__background {
@@ -117,7 +130,6 @@ onUnmounted(() => {
 .navigation__menu {
   list-style-type: none;
   margin: 0;
-  padding: 0 20px;
   display: flex;
 }
 

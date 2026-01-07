@@ -1,9 +1,8 @@
 <template>
-  <Transition name="the-header">
-    <div v-if="showHeader">
-      <TheHeaderResponsive />
-    </div>
-  </Transition>
+  <div v-if="showHeader">
+    <TheHeaderSpacer />
+    <TheHeaderResponsive />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -12,23 +11,3 @@ const showHeader = computed(() => {
   return route.path !== '/';
 });
 </script>
-
-<style lang="scss">
-.the-header-enter-active {
-  transition: opacity 150ms ease-out;
-}
-
-.the-header-leave-active {
-  transition: opacity 150ms ease-in;
-}
-
-.the-header-enter-from,
-.the-header-leave-to {
-  opacity: 0;
-}
-
-.the-header-enter-to,
-.the-header-leave-from {
-  opacity: 1;
-}
-</style>

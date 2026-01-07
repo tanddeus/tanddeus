@@ -560,6 +560,13 @@
 .email-address {
   display: block;
   text-align: center;
+  font-size: 18px;
+}
+
+@media screen and (width >= 414px) {
+  .email-address {
+    font-size: 22px;
+  }
 }
 
 @media screen and (width >= 700px) {

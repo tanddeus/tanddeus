@@ -1,7 +1,6 @@
 <template>
-  <div class="spacer" />
   <header class="header">
-    <svg ref="svgRef" class="header__background" />
+    <svg ref="svgRef" class="header__background"></svg>
 
     <nav class="header--navigation">
       <NuxtLink to="/">
