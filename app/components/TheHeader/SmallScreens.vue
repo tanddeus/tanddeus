@@ -17,10 +17,12 @@
     <div class="hamburger-menu" v-if="showMenu">
       <ul class="hamburger-menu__items main-menu">
         <li class="main-menu__item">
-          <NuxtLink to="/about">About</NuxtLink>
+          <NuxtLink to="/about" @click="setShowMenu(false)">About</NuxtLink>
         </li>
         <li class="main-menu__item">
-          <NuxtLink to="/projects">Projects</NuxtLink>
+          <NuxtLink to="/projects" @click="setShowMenu(false)"
+            >Projects</NuxtLink
+          >
         </li>
       </ul>
       <ul class="hamburger-menu__items social-media-menu">
@@ -52,6 +54,7 @@ const titleRef = ref<HTMLImageElement | null>(null);
 const backgroundRendererRef = ref<BackgroundRenderer | null>(null);
 
 const showMenu = ref(false);
+
 const setShowMenu = (show: boolean) => {
   showMenu.value = show;
 };
@@ -124,6 +127,7 @@ watch(showMenu, () => {
   display: flex;
   flex-direction: column;
   background-color: $color-dark-gray;
+  z-index: 1;
 }
 
 .header--closed {

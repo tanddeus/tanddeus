@@ -1,6 +1,8 @@
 <template>
-  <TheHeaderSmallScreens v-if="showSmScreenHeader" />
-  <TheHeaderLargeScreens v-else />
+  <ClientOnly>
+    <TheHeaderSmallScreens v-if="showSmScreenHeader" />
+    <TheHeaderLargeScreens v-else
+  /></ClientOnly>
 </template>
 
 <script setup lang="ts">

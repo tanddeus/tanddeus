@@ -12,8 +12,8 @@
       />
       <h2 class="hero__subtitle">Web Design and Development</h2>
       <div class="hero__links">
-        <NuxtLink href="/about" class="hero__link">About</NuxtLink>
-        <NuxtLink href="/projects" class="hero__link">Projects</NuxtLink>
+        <NuxtLink to="/about" class="hero__link">About</NuxtLink>
+        <NuxtLink to="/projects" class="hero__link">Projects</NuxtLink>
       </div>
     </div>
   </div>
@@ -86,6 +86,7 @@ onMounted(() => {
   );
 
   backgroundAnimationManagerRef.value.beginAnimation();
+  backgroundAnimationManagerRef.value?.watchForResize();
 
   $gsap.to('.hero__title-container', {
     opacity: 1,
@@ -97,13 +98,17 @@ onMounted(() => {
   });
 });
 
-onActivated(() => {
-  backgroundAnimationManagerRef.value?.watchForResize();
-});
-
-onDeactivated(() => {
+onUnmounted(() => {
   backgroundAnimationManagerRef.value?.stopWatchingForResize();
 });
+
+// onActivated(() => {
+//   backgroundAnimationManagerRef.value?.watchForResize();
+// });
+
+// onDeactivated(() => {
+//   backgroundAnimationManagerRef.value?.stopWatchingForResize();
+// });
 </script>
 
 <style lang="scss" scoped>

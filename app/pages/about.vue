@@ -1,5 +1,4 @@
 <template>
-  <TheHeader />
   <main class="page">
     <section class="section">
       <h1 class="title">About</h1>
