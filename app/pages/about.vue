@@ -494,8 +494,8 @@
       </picture>
       <p class="paragraph">
         Founded in 2024 by designer Pei-wen Jessica Tan and developer Joseph
-        Thaddeus Dvorak, Tanddeus Design and Development, LLC offers
-        best-in-class web development services to clients around the globe.
+        Thaddeus Dvorak, Tanddeus Design and Development, LLC offers top-tier
+        web development services to clients around the globe.
       </p>
       <p class="paragraph">
         As a Google-certified UI/UX Designer, Pei-wen places accessibility and
@@ -524,6 +524,12 @@
     <TheFooter />
   </main>
 </template>
+
+<script setup lang="ts">
+useHead({
+  title: 'About | Tanddeus Design and Development',
+});
+</script>
 
 <style lang="scss" scoped>
 .page {
@@ -559,8 +565,8 @@
 
 .email-address {
   display: block;
-  text-align: center;
   font-size: 18px;
+  text-align: center;
 }
 
 @media screen and (width >= 414px) {

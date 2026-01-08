@@ -123,19 +123,19 @@ const paddingRight = computed(() => {
 @use './styles' as *;
 
 .header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: $header-height;
+  background-color: $color-dark-gray;
   border-bottom: 1px solid $color-teal;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
-  background-color: $color-dark-gray;
-  z-index: 1;
+  height: $header-height;
+  left: 0;
+  overflow: hidden;
   padding-left: v-bind(paddingLeft);
   padding-right: v-bind(paddingRight);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
 }
 
 .header--closed {
@@ -147,19 +147,20 @@ const paddingRight = computed(() => {
 }
 
 .header__background {
+  height: 100%;
+  left: 0;
   position: absolute;
   top: 0;
-  left: 0;
-  height: 100%;
   width: 100%;
   z-index: -1;
 }
 
 .header--navigation {
-  height: $header-height;
-  display: flex;
-  justify-content: space-between;
   align-items: center;
+  display: flex;
+  height: $header-height;
+  justify-content: space-between;
+
   // padding-left: $horizontal-padding-sm-screens;
 }
 
@@ -168,8 +169,8 @@ const paddingRight = computed(() => {
 }
 
 .hamburger-menu {
-  flex: 1;
   display: flex;
+  flex: 1;
   flex-direction: column;
 }
 
@@ -180,12 +181,12 @@ const paddingRight = computed(() => {
 }
 
 .main-menu {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   gap: 100px;
+  justify-content: center;
 }
 
 .social-media-menu {
@@ -204,12 +205,13 @@ const paddingRight = computed(() => {
   width: 30px;
 }
 
-@media screen and (max-height: 430px) {
+@media screen and (height <= 430px) {
   .main-menu {
     flex-direction: row;
   }
 }
 
+/* stylelint-disable */
 @keyframes open-menu {
   to {
     height: 100vh;
@@ -221,4 +223,5 @@ const paddingRight = computed(() => {
     height: $header-height;
   }
 }
+/* stylelint-enable */
 </style>

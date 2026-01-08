@@ -91,6 +91,12 @@
   </main>
 </template>
 
+<script setup lang="ts">
+useHead({
+  title: 'Projects | Tanddeus Design and Development',
+});
+</script>
+
 <style lang="scss" scoped>
 .page {
   display: flex;

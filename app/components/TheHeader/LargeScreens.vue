@@ -48,7 +48,7 @@ const titleRef = ref<HTMLImageElement | null>(null);
 const backgroundRendererRef = ref<BackgroundRenderer | null>(null);
 
 onMounted(() => {
-  const getOrigin = (svgWidth: number) => {
+  const getOrigin = () => {
     const {
       top: titleElementTop,
       left: titleElementLeft,
@@ -100,25 +100,25 @@ const paddingRight = computed(() => {
 @use './styles' as *;
 
 .header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: $header-height;
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid $color-teal;
   background-color: $color-dark-gray;
+  border-bottom: 1px solid $color-teal;
+  display: flex;
+  height: $header-height;
+  justify-content: space-between;
+  left: 0;
   padding-left: v-bind(paddingLeft);
   padding-right: v-bind(paddingRight);
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 .header__background {
+  height: 100%;
+  left: 0;
   position: absolute;
   top: 0;
-  left: 0;
-  height: 100%;
   width: 100%;
   z-index: -1;
 }
@@ -128,9 +128,9 @@ const paddingRight = computed(() => {
 }
 
 .navigation__menu {
+  display: flex;
   list-style-type: none;
   margin: 0;
-  display: flex;
 }
 
 .main-navigation__item:has(+ .main-navigation__item) {

@@ -38,45 +38,45 @@ function toggleMenu() {
 @use './styles' as *;
 
 .hamburger {
-  width: 65px;
-  height: $header-height;
+  background-color: transparent;
   border: none;
   box-sizing: border-box;
-  padding: 18px $horizontal-padding-sm-screens;
   display: flex;
   flex-direction: column;
+  height: $header-height;
   justify-content: space-between;
-  background-color: transparent;
+  padding: 18px $horizontal-padding-sm-screens;
+  width: 65px;
 }
 
 .hamburger__row {
   display: flex;
-  justify-content: center;
-  width: 40px;
   height: 3px;
+  justify-content: center;
   position: relative;
+  width: 40px;
 }
 
 .hamburger__bar {
+  background-color: $color-teal;
+  border-radius: 1.5px;
   display: inline-block;
   height: 3px;
-  border-radius: 1.5px;
   transition: all $menu-animation-duration $menu-animation-ease;
-  background-color: $color-teal;
 }
 
 .hamburger__bar--top-left {
-  width: 22px;
+  left: 0;
   position: absolute;
   top: 0;
-  left: 0;
+  width: 22px;
 }
 
 .hamburger__bar--top-right {
-  width: 22px;
   position: absolute;
-  top: 0;
   right: 0;
+  top: 0;
+  width: 22px;
 }
 
 .hamburger__bar--middle {
@@ -84,17 +84,17 @@ function toggleMenu() {
 }
 
 .hamburger__bar--bottom-left {
-  width: 22px;
+  left: 0;
   position: absolute;
   top: 0;
-  left: 0;
+  width: 22px;
 }
 
 .hamburger__bar--bottom-right {
-  width: 22px;
   position: absolute;
-  top: 0;
   right: 0;
+  top: 0;
+  width: 22px;
 }
 
 .hamburger--open .hamburger__bar--top-left {
