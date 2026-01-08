@@ -5,6 +5,9 @@ export default defineNuxtConfig({
   modules: ['@nuxt/eslint', '@hypernym/nuxt-gsap'],
   app: {
     head: {
+      htmlAttrs: {
+        lang: 'en',
+      },
       link: [
         {
           rel: 'icon',

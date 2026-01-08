@@ -4,21 +4,71 @@
     <nav class="navigation">
       <ul class="navigation__menu">
         <li class="main-navigation__item">
-          <NuxtLink to="/about">About</NuxtLink>
+          <NuxtLink to="/about" class="main-navigation__link">About</NuxtLink>
         </li>
         <li class="main-navigation__item">
-          <NuxtLink to="/projects">Projects</NuxtLink>
+          <NuxtLink to="/projects" class="main-navigation__link"
+            >Projects</NuxtLink
+          >
         </li>
       </ul>
     </nav>
 
     <NuxtLink to="/">
-      <img
-        ref="titleRef"
-        src="/images/components/hero/title.svg"
-        alt="Go to the Tanddeus home page"
-        class="header__title"
-    /></NuxtLink>
+      <picture>
+        <source
+          srcset="
+            /images/components/the-header/large-screens/logo/avif/logo_300w_v1.avif  1x,
+            /images/components/the-header/large-screens/logo/avif/logo_450w_v1.avif  1.5x,
+            /images/components/the-header/large-screens/logo/avif/logo_600w_v1.avif  2x,
+            /images/components/the-header/large-screens/logo/avif/logo_900w_v1.avif  3x,
+            /images/components/the-header/large-screens/logo/avif/logo_1200w_v1.avif 4x,
+            /images/components/the-header/large-screens/logo/avif/logo_1200w_v1.avif
+          "
+          type="image/avif"
+        />
+        <source
+          srcset="
+            /images/components/the-header/large-screens/logo/webp/logo_300w_v1.webp  1x,
+            /images/components/the-header/large-screens/logo/webp/logo_450w_v1.webp  1.5x,
+            /images/components/the-header/large-screens/logo/webp/logo_600w_v1.webp  2x,
+            /images/components/the-header/large-screens/logo/webp/logo_900w_v1.webp  3x,
+            /images/components/the-header/large-screens/logo/webp/logo_1200w_v1.webp 4x,
+            /images/components/the-header/large-screens/logo/webp/logo_1200w_v1.webp
+          "
+          type="image/webp"
+        />
+        <!--
+        <img
+          srcset="
+            /images/components/the-header/large-screens/logo/jpeg/logo_300w_v1.jpeg  1x,
+            /images/components/the-header/large-screens/logo/jpeg/logo_450w_v1.jpeg  1.5x,
+            /images/components/the-header/large-screens/logo/jpeg/logo_600w_v1.jpeg  2x,
+            /images/components/the-header/large-screens/logo/jpeg/logo_900w_v1.jpeg  3x,
+            /images/components/the-header/large-screens/logo/jpeg/logo_1200w_v1.jpeg 4x,
+            /images/components/the-header/large-screens/logo/jpeg/logo_1200w_v1.jpeg
+          "
+          src="/images/components/the-header/large-screens/logo/jpeg/logo_1200w_v1.jpeg"
+          alt="Go to the Tanddeus home page"
+        />
+        -->
+        <img
+          ref="titleRef"
+          srcset="
+            /images/components/the-header/large-screens/logo/png/logo_300w_v1.png  1x,
+            /images/components/the-header/large-screens/logo/png/logo_450w_v1.png  1.5x,
+            /images/components/the-header/large-screens/logo/png/logo_600w_v1.png  2x,
+            /images/components/the-header/large-screens/logo/png/logo_900w_v1.png  3x,
+            /images/components/the-header/large-screens/logo/png/logo_1200w_v1.png 4x,
+            /images/components/the-header/large-screens/logo/png/logo_1200w_v1.png
+          "
+          src="/images/components/the-header/large-screens/logo/png/logo_300w_v1.png"
+          alt="Go to the Tanddeus home page"
+          width="300"
+          height="32"
+        />
+      </picture>
+    </NuxtLink>
     <nav class="navigation">
       <ul class="navigation__menu secondary-navigation__menu">
         <li>
@@ -65,8 +115,8 @@ onMounted(() => {
     const letterTLeft = titleElementLeft + 0.005 * titleElementWidth;
 
     return {
-      x: letterTLeft,
-      y: titleTextTop,
+      x: titleElementLeft,
+      y: titleElementTop,
     };
   };
 
@@ -137,8 +187,9 @@ const paddingRight = computed(() => {
   margin-right: 50px;
 }
 
-.header__title {
-  height: 35px;
+.main-navigation__link:hover {
+  color: $color-teal;
+  text-shadow: 1px 1px 3px #6bdcff40;
 }
 
 .secondary-navigation__menu {

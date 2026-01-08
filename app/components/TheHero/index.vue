@@ -2,14 +2,45 @@
   <div class="hero">
     <svg ref="svgRef" class="hero__background"></svg>
     <div class="hero__title-container">
-      <img
-        ref="titleRef"
-        src="/images/components/hero/title.svg"
-        alt="Tanddeus"
-        role="heading"
-        aria-level="1"
-        class="hero__title"
-      />
+      <picture>
+        <source
+          srcset="
+            /images/components/hero/title/avif/title_900w_v1.avif  1x,
+            /images/components/hero/title/avif/title_1350w_v1.avif 1.5x,
+            /images/components/hero/title/avif/title_1800w_v1.avif 2x,
+            /images/components/hero/title/avif/title_2700w_v1.avif 3x,
+            /images/components/hero/title/avif/title_3600w_v1.avif 4x,
+            /images/components/hero/title/avif/title_900w_v1.avif
+          "
+          type="image/avif"
+        />
+        <source
+          srcset="
+            /images/components/hero/title/webp/title_900w_v1.webp  1x,
+            /images/components/hero/title/webp/title_1350w_v1.webp 1.5x,
+            /images/components/hero/title/webp/title_1800w_v1.webp 2x,
+            /images/components/hero/title/webp/title_2700w_v1.webp 3x,
+            /images/components/hero/title/webp/title_3600w_v1.webp 4x,
+            /images/components/hero/title/webp/title_900w_v1.webp
+          "
+          type="image/webp"
+        />
+        <img
+          ref="titleRef"
+          srcset="
+            /images/components/hero/title/png/title_917w_v1.png  1x,
+            /images/components/hero/title/png/title_1375w_v1.png 1.5x,
+            /images/components/hero/title/png/title_1833w_v1.png 2x,
+            /images/components/hero/title/png/title_2749w_v1.png 3x,
+            /images/components/hero/title/png/title_3665w_v1.png 4x
+          "
+          src="/images/components/hero/title/png/title_917w_v1.png"
+          alt="Tanddeus"
+          role="heading"
+          aria-level="1"
+          class="hero__title"
+        />
+      </picture>
       <h2 class="hero__subtitle">Web Design and Development</h2>
       <div class="hero__links">
         <NuxtLink to="/about" class="hero__link">About</NuxtLink>
@@ -61,9 +92,9 @@ onMounted(() => {
         of the element. The position of the letter A would have to be 
         calculated regardless.
       */
-    const titleTextTop = titleElementTop + 0.046 * titleElementHeight;
+    const titleTextTop = titleElementTop + 0.055 * titleElementHeight;
     const letterTLeft = titleElementLeft + 0.005 * titleElementWidth;
-    const letterALeft = titleElementLeft + 0.1735 * titleElementWidth;
+    const letterALeft = titleElementLeft + 0.1765 * titleElementWidth;
     const tabletBreakpoint = 940;
 
     return {
@@ -159,6 +190,11 @@ onBeforeUnmount(() => {
 .hero__links {
   display: flex;
   justify-content: center;
+}
+
+.hero__link:hover {
+  color: $color-teal;
+  text-shadow: 1px 1px 3px #6bdcff40;
 }
 
 .hero__link:has(+ .hero__link) {

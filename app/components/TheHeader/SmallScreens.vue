@@ -4,22 +4,64 @@
 
     <nav class="header--navigation">
       <NuxtLink to="/">
-        <img
-          ref="titleRef"
-          src="/images/components/hero/title.svg"
-          alt="Go to the Tanddeus home page"
-          class="header__title"
-      /></NuxtLink>
+        <picture>
+          <source
+            srcset="
+              /images/components/the-header/small-screens/logo/avif/logo_200w_v1.avif 1x,
+              /images/components/the-header/small-screens/logo/avif/logo_300w_v1.avif 1.5x,
+              /images/components/the-header/small-screens/logo/avif/logo_400w_v1.avif 2x,
+              /images/components/the-header/small-screens/logo/avif/logo_600w_v1.avif 3x,
+              /images/components/the-header/small-screens/logo/avif/logo_800w_v1.avif 4x,
+              /images/components/the-header/small-screens/logo/avif/logo_800w_v1.avif
+            "
+            type="image/avif"
+          />
+          <source
+            srcset="
+              /images/components/the-header/small-screens/logo/webp/logo_200w_v1.webp 1x,
+              /images/components/the-header/small-screens/logo/webp/logo_300w_v1.webp 1.5x,
+              /images/components/the-header/small-screens/logo/webp/logo_400w_v1.webp 2x,
+              /images/components/the-header/small-screens/logo/webp/logo_600w_v1.webp 3x,
+              /images/components/the-header/small-screens/logo/webp/logo_800w_v1.webp 4x,
+              /images/components/the-header/small-screens/logo/webp/logo_800w_v1.webp
+            "
+            type="image/webp"
+          />
+          <img
+            ref="titleRef"
+            srcset="
+              /images/components/the-header/small-screens/logo/png/logo_200w_v1.png 1x,
+              /images/components/the-header/small-screens/logo/png/logo_300w_v1.png 1.5x,
+              /images/components/the-header/small-screens/logo/png/logo_400w_v1.png 2x,
+              /images/components/the-header/small-screens/logo/png/logo_600w_v1.png 3x,
+              /images/components/the-header/small-screens/logo/png/logo_800w_v1.png 4x,
+              /images/components/the-header/small-screens/logo/png/logo_800w_v1.png
+            "
+            src="/images/components/the-header/small-screens/logo/png/logo_200w_v1.png"
+            alt="Go to the Tanddeus home page"
+            width="200"
+            height="21"
+          />
+        </picture>
+      </NuxtLink>
       <HamburgerButton :is-open="showMenu" :set-is-open="setShowMenu" />
     </nav>
 
     <div v-if="showMenu" class="hamburger-menu">
       <ul class="hamburger-menu__items main-menu">
         <li class="main-menu__item">
-          <NuxtLink to="/about" @click="setShowMenu(false)">About</NuxtLink>
+          <NuxtLink
+            to="/about"
+            class="main-menu__link"
+            @click="setShowMenu(false)"
+            >About</NuxtLink
+          >
         </li>
         <li class="main-menu__item">
-          <NuxtLink to="/projects" @click="setShowMenu(false)"
+          <NuxtLink
+            to="/projects"
+            class="main-menu__link"
+            @click="setShowMenu(false)"
             >Projects</NuxtLink
           >
         </li>
@@ -160,12 +202,6 @@ const paddingRight = computed(() => {
   display: flex;
   height: $header-height;
   justify-content: space-between;
-
-  // padding-left: $horizontal-padding-sm-screens;
-}
-
-.header__title {
-  height: 22px;
 }
 
 .hamburger-menu {
@@ -187,6 +223,11 @@ const paddingRight = computed(() => {
   flex-direction: column;
   gap: 100px;
   justify-content: center;
+}
+
+.main-menu__link:hover {
+  color: $color-teal;
+  text-shadow: 1px 1px 3px #6bdcff40;
 }
 
 .social-media-menu {
