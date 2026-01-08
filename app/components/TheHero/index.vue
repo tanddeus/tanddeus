@@ -118,16 +118,18 @@ onMounted(() => {
     initialDelay,
   );
 
-  backgroundAnimationManagerRef.value.beginAnimation();
-  backgroundAnimationManagerRef.value?.watchForResize();
+  nextTick(() => {
+    backgroundAnimationManagerRef.value?.beginAnimation();
+    backgroundAnimationManagerRef.value?.watchForResize();
 
-  $gsap.to('.hero__title-container', {
-    opacity: 1,
-    delay:
-      linesAnimationDuration.total('seconds') +
-      (initialDelay?.total('seconds') ?? 0),
-    duration: fadeAnimationDuration.total('seconds'),
-    ease: fadeAnimationEasingFunction,
+    $gsap.to('.hero__title-container', {
+      opacity: 1,
+      delay:
+        linesAnimationDuration.total('seconds') +
+        (initialDelay?.total('seconds') ?? 0),
+      duration: fadeAnimationDuration.total('seconds'),
+      ease: fadeAnimationEasingFunction,
+    });
   });
 });
 
