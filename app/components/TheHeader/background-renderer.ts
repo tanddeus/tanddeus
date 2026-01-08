@@ -11,7 +11,11 @@ export class BackgroundRenderer {
   private svgElement: SVGElement;
   private getOrigin: () => Point;
   private linesByDegrees: Map<number, SVGLineElement> = new Map();
-  private resizeObserver?: ResizeObserver;
+
+  private lastOrigin?: Point;
+  private lastSVGWidth?: number;
+  private lastSVGHeight?: number;
+  private interval?: ReturnType<typeof setInterval>;
 
   constructor(
     svgElement: SVGElement,
@@ -38,16 +42,23 @@ export class BackgroundRenderer {
     }
   }
 
-  watchForResize() {
-    this.resizeObserver = new ResizeObserver(() => {
-      this.updateLines();
-    });
-
-    this.resizeObserver.observe(this.svgElement);
+  watchForChanges() {
+    this.interval = setInterval(() => {
+      const origin = this.getOrigin();
+      if (
+        origin.x !== this.lastOrigin?.x ||
+        origin.y !== this.lastOrigin?.y ||
+        this.svgElement.clientWidth !== this.lastSVGWidth ||
+        this.svgElement.clientHeight !== this.lastSVGHeight
+      ) {
+        this.updateLines();
+        this.storeOriginAndSVGSize();
+      }
+    }, 10);
   }
 
-  stopWatchingForResize() {
-    this.resizeObserver?.disconnect();
+  stopWatchingForChanges() {
+    clearInterval(this.interval);
   }
 
   private createLineElement(angle: Angle) {
@@ -73,6 +84,12 @@ export class BackgroundRenderer {
     line.style.opacity = '0.2';
 
     return line;
+  }
+
+  private storeOriginAndSVGSize() {
+    this.lastOrigin = this.getOrigin();
+    this.lastSVGWidth = this.svgElement.clientWidth;
+    this.lastSVGHeight = this.svgElement.clientHeight;
   }
 
   private updateLines() {

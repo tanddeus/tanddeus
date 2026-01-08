@@ -19,6 +19,7 @@ export class BackgroundAnimationManager {
   private fadeAnimationEasingFunction: GSAPTweenVars['ease'];
   private initialDelay?: Temporal.Duration;
   private linesByDegrees: Map<number, SVGLineElement> = new Map();
+
   private lastOrigin?: Point;
   private lastSVGWidth?: number;
   private lastSVGHeight?: number;

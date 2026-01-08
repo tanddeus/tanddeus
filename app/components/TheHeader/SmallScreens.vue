@@ -130,11 +130,11 @@ onMounted(() => {
   );
 
   backgroundRendererRef.value.drawBackground();
-  backgroundRendererRef.value?.watchForResize();
+  backgroundRendererRef.value?.watchForChanges();
 });
 
 onUnmounted(() => {
-  backgroundRendererRef.value?.stopWatchingForResize();
+  backgroundRendererRef.value?.stopWatchingForChanges();
 });
 
 watch(showMenu, () => {
