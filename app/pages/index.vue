@@ -20,13 +20,6 @@ import { Temporal } from 'temporal-polyfill';
 
 useHead({
   title: 'Tanddeus Design and Development',
-  meta: [
-    {
-      name: 'description',
-      content:
-        'Tanddeus Design and Development offers top-tier web development services to clients in Southern California and around the globe.',
-    },
-  ],
 });
 
 const linesAnimationDuration = Temporal.Duration.from({ milliseconds: 750 });

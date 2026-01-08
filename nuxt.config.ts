@@ -8,6 +8,13 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'en',
       },
+      meta: [
+        {
+          name: 'description',
+          content:
+            'Tanddeus Design and Development offers top-tier web development services to clients in Southern California and around the globe.',
+        },
+      ],
       link: [
         {
           rel: 'icon',
