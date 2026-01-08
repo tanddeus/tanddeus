@@ -19,7 +19,10 @@ export class BackgroundAnimationManager {
   private fadeAnimationEasingFunction: GSAPTweenVars['ease'];
   private initialDelay?: Temporal.Duration;
   private linesByDegrees: Map<number, SVGLineElement> = new Map();
-  private resizeObserver?: ResizeObserver;
+  private lastOrigin?: Point;
+  private lastSVGWidth?: number;
+  private lastSVGHeight?: number;
+  private interval?: ReturnType<typeof setInterval>;
 
   constructor(
     svgElement: SVGElement,
@@ -47,14 +50,26 @@ export class BackgroundAnimationManager {
 
   beginAnimation() {
     this.createAndAnimateLines();
+    this.storeOriginAndSVGSize();
   }
 
-  watchForResize() {
-    this.handleSVGResizeEvents();
+  watchForChanges() {
+    this.interval = setInterval(() => {
+      const origin = this.getOrigin();
+      if (
+        origin.x !== this.lastOrigin?.x ||
+        origin.y !== this.lastOrigin?.y ||
+        this.svgElement.clientWidth !== this.lastSVGWidth ||
+        this.svgElement.clientHeight !== this.lastSVGHeight
+      ) {
+        this.updateLines();
+        this.storeOriginAndSVGSize();
+      }
+    }, 10);
   }
 
-  stopWatchingForResize() {
-    this.resizeObserver?.disconnect();
+  stopWatchingForChanges() {
+    clearInterval(this.interval);
   }
 
   private calculateLineAnimationDuration(
@@ -159,13 +174,10 @@ export class BackgroundAnimationManager {
     );
   }
 
-  private handleSVGResizeEvents() {
-    this.resizeObserver = new ResizeObserver(() => {
-      console.log('resize');
-      this.updateLines();
-    });
-
-    this.resizeObserver.observe(this.svgElement);
+  private storeOriginAndSVGSize() {
+    this.lastOrigin = this.getOrigin();
+    this.lastSVGWidth = this.svgElement.clientWidth;
+    this.lastSVGHeight = this.svgElement.clientHeight;
   }
 
   private updateLines() {

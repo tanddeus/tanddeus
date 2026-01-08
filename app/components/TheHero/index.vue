@@ -118,23 +118,21 @@ onMounted(() => {
     initialDelay,
   );
 
-  nextTick(() => {
-    backgroundAnimationManagerRef.value?.beginAnimation();
-    backgroundAnimationManagerRef.value?.watchForResize();
+  backgroundAnimationManagerRef.value.beginAnimation();
+  backgroundAnimationManagerRef.value.watchForChanges();
 
-    $gsap.to('.hero__title-container', {
-      opacity: 1,
-      delay:
-        linesAnimationDuration.total('seconds') +
-        (initialDelay?.total('seconds') ?? 0),
-      duration: fadeAnimationDuration.total('seconds'),
-      ease: fadeAnimationEasingFunction,
-    });
+  $gsap.to('.hero__title-container', {
+    opacity: 1,
+    delay:
+      linesAnimationDuration.total('seconds') +
+      (initialDelay?.total('seconds') ?? 0),
+    duration: fadeAnimationDuration.total('seconds'),
+    ease: fadeAnimationEasingFunction,
   });
 });
 
 onBeforeUnmount(() => {
-  backgroundAnimationManagerRef.value?.stopWatchingForResize();
+  backgroundAnimationManagerRef.value?.stopWatchingForChanges();
 });
 
 // onActivated(() => {
